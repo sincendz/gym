@@ -1,9 +1,27 @@
-import sequelize from "./database/connection.js";
-import { User } from "./models/User.js";
+import express from "express";
+import sequelize from "../src/database/connection.js";
+import userRouter from "./routers/userRouter.js";
 
-try {
-  await sequelize.sync();
-  console.log("Deu bom!");
-} catch (error) {
-  console.error("Deu ruim", error);
-}
+const app = express();
+const port = 3000;
+
+app.use("/users", userRouter);
+
+app.get("/", (req, res) => {
+  res.send("Olá,mundo!!");
+});
+
+// Sincroniza o banco e só depois inicia o servidor
+const startServer = async () => {
+  try {
+    await sequelize.sync();
+    console.log("Deu bom!");
+    app.listen(port, () => {
+      console.log(`Servidor rodando na porta ${port}`);
+    });
+  } catch (error) {
+    console.error("Deu ruim", error);
+  }
+};
+
+startServer();
