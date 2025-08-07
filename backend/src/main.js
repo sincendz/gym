@@ -11,7 +11,6 @@ app.get("/", (req, res) => {
   res.send("Olá,mundo!!");
 });
 
-// Sincroniza o banco e só depois inicia o servidor
 const startServer = async () => {
   try {
     await sequelize.sync();
