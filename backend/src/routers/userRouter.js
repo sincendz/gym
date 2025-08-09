@@ -14,7 +14,7 @@ router.get("/get_all_users", async (req, res) => {
 
 // exp req
 //http://localhost:3000/users/get_user_by_id?userId=1
-router.get("/get_user_by_id", async (req, res) => {
+router.get("/get_user_by_id/`{userid}`", async (req, res) => {
   try {
     const userId = req.query.userId;
     const user = await User.findOne({ where: { id: userId } });
