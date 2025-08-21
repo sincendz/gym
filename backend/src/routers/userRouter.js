@@ -28,7 +28,25 @@ router.get("/get_user_by_id/`{userid}`", async (req, res) => {
   }
 });
 
-router.post("/create_user/", (req, res) => {});
+router.post("/create_user", async (req, res) => {
+  try {
+    const user = await User.create({
+      firstName: req.body.name,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      type: req.body.type,
+      born_date: req.body.born_date,
+      cell_phone_number: req.body.cell_phone_number,
+      isActive: req.body.isActive,
+      createdAt: req.body.createdAt,
+      updatedAt: req.body.updatedAt,
+    });
+    res.status(201).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 router.get("/", (req, res) => {
   res.send("Oie user");
