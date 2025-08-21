@@ -1,6 +1,7 @@
 import express from "express";
 import { Plan } from "../models/Plan.js";
 const router = express.Router();
+import { Op } from "sequelize";
 
 router.get("/get_all_plans", async (req, res) => {
   try {
@@ -33,6 +34,22 @@ router.post("/create_plan", async (req, res) => {
       description: req.body.description,
     });
     res.status(201).json({ data: plan });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/search_plan_by_name/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+    const plans = await Plan.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+    });
+    res.status(200).json({ data: plans });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
